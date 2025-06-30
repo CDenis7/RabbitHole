@@ -126,3 +126,48 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #ea580c !important;
 }
+/* Loading spinner orange */
+.loading-spinner {
+  color: #f97316 !important;
+}
+
+/* Dropdown hover effects */
+.dropdown-content .menu li > *:hover {
+  background-color: rgba(249, 115, 22, 0.1) !important;
+  color: #f97316 !important;
+}
+
+/* Link hover effects */
+.link:hover {
+  color: #f97316 !important;
+}
+
+/* Card hover effects îmbunătățite */
+.card:hover {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Input focus effects */
+.input:focus,
+.textarea:focus {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
+}
+
+/* Badge primary */
+.badge-primary {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+}
+
+/* Alert styling pentru consistență */
+.alert-error {
+  border-left: 4px solid #ef4444 !important;
+}
+
+/* Navbar sticky enhancement */
+.navbar.sticky {
+  backdrop-filter: blur(8px);
+  background-color: rgba(39, 39, 42, 0.95) !important;
+}

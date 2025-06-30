@@ -71,11 +71,40 @@ const changeSlide = (direction) => {
 <template>
     <div class="card card-compact bg-base-200 shadow-sm mb-4 transition-all duration-300 border border-transparent hover:border-gray-700">
     <div class="flex">
-            <div class="flex flex-col items-center p-2 bg-base-300/50 rounded-l-lg">
-        <button @click="handleVote(1)" class="btn btn-ghost btn-sm p-1" :class="{ 'text-primary': userVote === 1 }" :disabled="isVoting">⬆️</button>
-        <span class="font-bold text-xs" :class="{ 'text-primary': userVote === 1, 'text-info': userVote === -1 }">{{ localVoteCount }}</span>
-        <button @click="handleVote(-1)" class="btn btn-ghost btn-sm p-1" :class="{ 'text-info': userVote === -1 }" :disabled="isVoting">⬇️</button>
-      </div>
+           <div class="flex flex-col items-center p-2 bg-base-300/50 rounded-l-lg">
+  <button 
+    @click="handleVote(1)" 
+    class="btn btn-ghost btn-sm p-1 transition-all duration-200" 
+    :class="{ 
+      'text-primary hover:text-primary/80': userVote === 1,
+      'hover:text-primary/60': userVote !== 1 
+    }" 
+    :disabled="isVoting"
+  >
+    ⬆️
+  </button>
+  <span 
+    class="font-bold text-xs transition-colors duration-200" 
+    :class="{ 
+      'text-primary': userVote === 1, 
+      'text-error': userVote === -1,
+      'text-base-content': userVote === 0
+    }"
+  >
+    {{ localVoteCount }}
+  </span>
+  <button 
+    @click="handleVote(-1)" 
+    class="btn btn-ghost btn-sm p-1 transition-all duration-200" 
+    :class="{ 
+      'text-error hover:text-error/80': userVote === -1,
+      'hover:text-error/60': userVote !== -1 
+    }" 
+    :disabled="isVoting"
+  >
+    ⬇️
+  </button>
+</div>
      
             <div class="card-body">
                 <div class="text-xs text-base-content/70">

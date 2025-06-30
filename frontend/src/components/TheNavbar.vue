@@ -27,7 +27,7 @@ const handleLogout = () => {
     <!-- Stânga: Logo și Nume -->
     <div class="navbar-start">
       <RouterLink to="/" class="btn btn-ghost text-xl font-bold">
-         <img src="../assets/logo.png" alt="RabbitHole Logo" class="h-11 w-100 mr-23" />
+       <img src="../assets/logo.png" alt="RabbitHole Logo" class="h-14 w-auto mr-2" />
       </RouterLink>
     </div>
 
