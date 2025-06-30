@@ -2,13 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Apply RabbitHole theme globally */
+/* FORȚEAZĂ TEMA ORANGE */
 :root {
   color-scheme: dark;
+  --p: 24 100% 52% !important;  /* Orange primary */
+  --pf: 24 100% 45% !important; /* Orange primary focus */
+  --pc: 0 0% 100% !important;   /* Primary content white */
+  --a: 22 100% 62% !important;  /* Orange accent */
+  --af: 24 100% 52% !important; /* Orange accent focus */
 }
 
 html {
   data-theme: rabbithole;
+}
+
+/* OVERRIDE PURPLE COLORS WITH ORANGE */
+html[data-theme="rabbithole"] {
+  --p: 24 100% 52% !important;  /* #f97316 in HSL */
+  --pf: 24 100% 45% !important; /* #ea580c in HSL */
+  --pc: 0 0% 100% !important;
+  --a: 22 100% 62% !important;  /* #fb923c in HSL */
+  --af: 24 100% 52% !important;
+}
+
+/* Force orange on all primary elements */
+.btn-primary {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+}
+
+.btn-primary:hover {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Force orange on borders */
+.border-primary {
+  border-color: #f97316 !important;
+}
+
+.border-primary\/20 {
+  border-color: rgba(249, 115, 22, 0.2) !important;
+}
+
+.border-primary\/30 {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+}
+
+.border-primary\/40 {
+  border-color: rgba(249, 115, 22, 0.4) !important;
+}
+
+/* Force orange text */
+.text-primary {
+  color: #f97316 !important;
+}
+
+/* Force orange shadows */
+.shadow-primary\/10 {
+  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.1) !important;
+}
+
+.shadow-primary\/20 {
+  box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2) !important;
+}
+
+.shadow-primary\/30 {
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3) !important;
 }
 
 /* Custom RabbitHole styles */
@@ -42,27 +102,27 @@ html {
   }
 }
 
-/* Custom scrollbar */
+/* Background pattern - ORANGE */
+body {
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(249, 115, 22, 0.15) 1px, transparent 0) !important;
+  background-size: 20px 20px;
+}
+
+/* Custom scrollbar - ORANGE */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--b2));
+  background: #27272a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--p));
+  background: #f97316 !important;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--pf));
-}
-
-/* Background pattern */
-body {
-  background-image: 
-    radial-gradient(circle at 1px 1px, rgba(156, 95, 255, 0.15) 1px, transparent 0);
-  background-size: 20px 20px;
+  background: #ea580c !important;
 }

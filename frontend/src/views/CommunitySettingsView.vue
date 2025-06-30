@@ -1,4 +1,3 @@
-<!-- src/views/CommunitySettingsView.vue -->
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
@@ -61,7 +60,7 @@ onMounted(fetchData);
       <span>{{ error }}</span>
     </div>
     <div v-else-if="community">
-      <h1 class="text-3xl font-bold">Setări pentru r/{{ community.name }}</h1>
+      <h1 class="text-3xl font-bold">Setări pentru h/{{ community.name }}</h1>
       <p class="mb-6">Gestionează membrii comunității.</p>
 
       <div class="overflow-x-auto">
@@ -82,9 +81,7 @@ onMounted(fetchData);
                 <span class="badge" :class="{ 'badge-primary': member.role === 'owner' }">{{ member.role }}</span>
               </td>
               <td>
-                <!-- Butonul de eliminare este vizibil DOAR dacă utilizatorul logat este proprietar
-                     ȘI membrul din listă NU este proprietarul însuși. -->
-                <button
+                                <button
                   v-if="isOwner && member.id !== community.owner_id"
                   @click="handleRemoveMember(member.id)"
                   class="btn btn-error btn-sm"

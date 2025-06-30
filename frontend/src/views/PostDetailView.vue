@@ -1,4 +1,3 @@
-<!-- src/views/PostDetailView.vue -->
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
@@ -16,7 +15,7 @@ const error = ref(null);
 const carouselContainer = ref(null);
 
 const fetchPost = async (id) => {
-  isLoading.value = true; 
+  isLoading.value = true;
   error.value = null;
   try {
     const response = await apiClient.get(`/posts/${id}`);
@@ -49,15 +48,14 @@ const changeSlide = (direction) => {
     <div v-else-if="error" class="alert alert-error"><span>{{ error }}</span></div>
     <article v-else-if="post" class="bg-base-200 p-4 sm:p-6 rounded-lg shadow-lg">
       <div class="text-sm text-base-content/70 mb-2">
-        <span>Posted by <RouterLink :to="`/user/${post.author}`" class="link link-hover">u/{{ post.author }}</RouterLink> in <RouterLink :to="`/community/${post.community_id}`" class="font-bold text-secondary link link-hover">r/{{ post.community_name }}</RouterLink></span>
+        <span>Posted by <RouterLink :to="`/user/${post.author}`" class="link link-hover">r/{{ post.author }}</RouterLink> in <RouterLink :to="`/community/${post.community_id}`" class="font-bold text-secondary link link-hover">h/{{ post.community_name }}</RouterLink></span>
       </div>
       <h1 class="text-3xl lg:text-4xl font-bold mb-4">{{ post.title }}</h1>
-      
+     
       <div class="prose max-w-none space-y-4">
         <p v-if="post.body" class="text-base lg:text-lg">{{ post.body }}</p>
-        
-        <!-- --- CARUSEL MODIFICAT --- -->
-        <div v-if="post.media && post.media.length > 0" class="relative">
+       
+                <div v-if="post.media && post.media.length > 0" class="relative">
           <div ref="carouselContainer" class="carousel w-full h-[70vh] rounded-lg bg-black snap-x snap-mandatory overflow-x-auto">
               <div v-for="(mediaItem, index) in post.media" :key="mediaItem.url" :id="`post-${post.id}-slide-${index}`" class="carousel-item relative w-full h-full flex-shrink-0 snap-center flex justify-center items-center">
                   <img v-if="mediaItem.type === 'image'" :src="`http://localhost:3001${mediaItem.url}`" class="h-full w-auto object-contain" />
@@ -65,14 +63,14 @@ const changeSlide = (direction) => {
               </div>
           </div>
           <div v-if="post.media.length > 1" class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-              <button @click.stop="changeSlide(-1)" class="btn btn-circle">❮</button> 
+              <button @click.stop="changeSlide(-1)" class="btn btn-circle">❮</button>
               <button @click.stop="changeSlide(1)" class="btn btn-circle">❯</button>
           </div>
         </div>
       </div>
-      
+     
       <div class="divider my-6"></div>
-      
+     
       <AddCommentForm v-if="authStore.isAuthenticated" :post-id="post.id" @comment-added="handleCommentAction" />
       <div v-else class="mt-4 p-4 bg-base-300 rounded-md text-center"><p>Trebuie să fii <RouterLink to="/login" class="link link-primary">autentificat</RouterLink> pentru a comenta.</p></div>
       <div class="divider mt-6"></div>

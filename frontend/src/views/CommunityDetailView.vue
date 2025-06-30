@@ -1,4 +1,3 @@
-<!-- src/views/CommunityDetailView.vue -->
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
@@ -142,7 +141,7 @@ onUnmounted(() => {
       <div class="mb-8 p-6 bg-base-200 rounded-lg shadow-md">
         <div class="flex justify-between items-center">
           <div>
-            <h1 class="text-4xl font-bold">r/{{ community.name }}</h1>
+            <h1 class="text-4xl font-bold">h/{{ community.name }}</h1>
             <p class="mt-2 text-base-content/80">{{ community.description }}</p>
           </div>
           <RouterLink v-if="isOwner" :to="`/community/${community.id}/settings`" class="btn btn-secondary">Gestionează Membrii</RouterLink>
@@ -166,7 +165,7 @@ onUnmounted(() => {
           <p v-if="actionError" class="text-error text-xs mt-2">{{ actionError }}</p>
         </div>
       </div>
-      
+     
       <h2 class="text-2xl font-bold mb-4">Postări</h2>
       <div class="bg-base-200 p-2 rounded-lg mb-4 flex items-center gap-2">
         <button @click="changeSort('new')" class="btn btn-sm" :class="{ 'btn-primary': activeSort === 'new', 'btn-ghost': activeSort !== 'new' }">Cele mai noi</button>

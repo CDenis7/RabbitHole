@@ -1,4 +1,3 @@
-<!-- src/components/CommentItem.vue -->
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -63,7 +62,7 @@ const handleReplyAdded = () => {
   <div class="p-3 my-2 bg-base-100 rounded-lg">
     <div v-if="!isEditing">
         <p class="text-sm">
-            <span class="font-semibold text-secondary">u/{{ comment.author }}</span>
+            <span class="font-semibold text-secondary">r/{{ comment.author }}</span>
         </p>
         <p class="text-base-content py-1">{{ comment.content }}</p>
         <div class="flex items-center gap-1 mt-1 text-xs">

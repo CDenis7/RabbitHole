@@ -1,4 +1,3 @@
-<!-- src/views/CreatePostView.vue -->
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -34,7 +33,7 @@ const handleSubmit = async () => {
     error.value = 'Comunitatea și titlul sunt obligatorii.';
     return;
   }
-  
+ 
   const formData = new FormData();
   formData.append('title', title.value);
   formData.append('communityId', selectedCommunity.value);
@@ -74,7 +73,7 @@ const handleSubmit = async () => {
             <select v-model="selectedCommunity" class="select select-bordered w-full" required>
               <option disabled :value="null">Selectează o comunitate</option>
               <option v-for="community in communities" :key="community.id" :value="community.id">
-                r/{{ community.name }}
+                h/{{ community.name }}
               </option>
             </select>
           </div>

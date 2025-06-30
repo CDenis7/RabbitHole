@@ -1,4 +1,3 @@
-<!-- src/views/CreateCommunityView.vue -->
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -47,11 +46,10 @@ const handleSubmit = async () => {
     <div class="card bg-base-200 shadow-xl">
       <div class="card-body">
         <form @submit.prevent="handleSubmit">
-          <!-- Câmp pentru Nume -->
-          <div class="form-control">
+                    <div class="form-control">
             <label class="label">
               <span class="label-text">Numele Comunității</span>
-              <span class="label-text-alt">fără "r/"</span>
+              <span class="label-text-alt">fără "h/"</span>
             </label>
             <input
               v-model="name"
@@ -62,8 +60,7 @@ const handleSubmit = async () => {
             />
           </div>
 
-          <!-- Câmp pentru Descriere -->
-          <div class="form-control mt-4">
+                    <div class="form-control mt-4">
             <label class="label">
               <span class="label-text">Descriere</span>
             </label>
@@ -73,14 +70,12 @@ const handleSubmit = async () => {
               placeholder="Descrie pe scurt despre ce este vorba în comunitatea ta."
             ></textarea>
           </div>
-          
-          <!-- Afișare eroare -->
-          <div v-if="error" class="alert alert-error text-sm mt-4">
+         
+                    <div v-if="error" class="alert alert-error text-sm mt-4">
             <span>{{ error }}</span>
           </div>
 
-          <!-- Buton de Submit -->
-          <div class="form-control mt-6">
+                    <div class="form-control mt-6">
             <button type="submit" class="btn btn-primary" :disabled="isLoading">
               <span v-if="isLoading" class="loading loading-spinner"></span>
               Creează Comunitate

@@ -1,4 +1,3 @@
-<!-- src/components/RightSidebar.vue -->
 <script setup>
 import { ref, watch } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
@@ -40,9 +39,8 @@ watch(
 
 <template>
   <div class="space-y-6">
-    <!-- Cardul Contextual pentru Comunitate -->
-    <div v-if="communityData" class="bg-base-200 p-4 rounded-lg shadow">
-      <h3 class="font-bold mb-2 text-base">About h/{{ communityData.name }}</h3>
+        <div v-if="communityData" class="bg-base-200 p-4 rounded-lg shadow">
+      <h3 class="font-bold mb-2 text-base">Despre h/{{ communityData.name }}</h3>
       <p class="text-sm text-base-content/80 mb-4">{{ communityData.description }}</p>
       <div class="divider my-2"></div>
       <div class="flex items-center space-x-4">
@@ -56,8 +54,7 @@ watch(
       <RouterLink to="/submit" class="btn btn-primary w-full mt-4">Create Post</RouterLink>
     </div>
 
-    <!-- Cardul Implicit -->
-    <div v-else class="bg-base-200 p-4 rounded-lg shadow">
+        <div v-else class="bg-base-200 p-4 rounded-lg shadow">
       <h3 class="font-bold mb-2 text-base">Home</h3>
       <p class="text-sm text-base-content/80 mb-4">Your personal RabbitHole frontpage. Come here to check in with your favorite communities.</p>
        <div class="divider my-2"></div>
@@ -65,9 +62,8 @@ watch(
       <div class="mt-2"></div>
       <RouterLink to="/communities/create" class="btn btn-outline w-full">Create a Hole</RouterLink>
     </div>
-    
-     <!-- Card cu Informații Generale -->
-    <div class="bg-base-200 p-4 rounded-lg shadow text-xs text-base-content/60">
+   
+         <div class="bg-base-200 p-4 rounded-lg shadow text-xs text-base-content/60">
         <p>User Agreement</p>
         <p>Privacy Policy</p>
         <p>Content Policy</p>
