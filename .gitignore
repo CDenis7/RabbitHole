@@ -1,0 +1,28 @@
+# Fișiere de configurare specifice sistemului de operare
+.DS_Store
+Thumbs.db
+
+# Dependințe Node.js (se instalează cu 'npm install')
+**/node_modules/
+
+# Fișiere de build generate de Vite (frontend)
+**/dist/
+**/dist-ssr/
+
+# Fișiere de log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Variabile de mediu - NU ÎNCĂRCA NICIODATĂ ACEST FIȘIER PE GITHUB!
+# Conține parolele bazei de date și cheia JWT.
+.env
+backend/.env 
+
+# Fișierele încărcate de utilizatori
+backend/uploads/
+
+# Fișiere specifice IDE-urilor (opțional)
+.idea/
+.vscode/
