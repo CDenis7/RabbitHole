@@ -2,73 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* FORȚEAZĂ TEMA ORANGE */
+/* Apply RabbitHole theme globally */
 :root {
   color-scheme: dark;
-  --p: 24 100% 52% !important;  /* Orange primary */
-  --pf: 24 100% 45% !important; /* Orange primary focus */
-  --pc: 0 0% 100% !important;   /* Primary content white */
-  --a: 22 100% 62% !important;  /* Orange accent */
-  --af: 24 100% 52% !important; /* Orange accent focus */
 }
 
 html {
   data-theme: rabbithole;
-}
-
-/* OVERRIDE PURPLE COLORS WITH ORANGE */
-html[data-theme="rabbithole"] {
-  --p: 24 100% 52% !important;  /* #f97316 in HSL */
-  --pf: 24 100% 45% !important; /* #ea580c in HSL */
-  --pc: 0 0% 100% !important;
-  --a: 22 100% 62% !important;  /* #fb923c in HSL */
-  --af: 24 100% 52% !important;
-}
-
-/* Force orange on all primary elements */
-.btn-primary {
-  background-color: #f97316 !important;
-  border-color: #f97316 !important;
-}
-
-.btn-primary:hover {
-  background-color: #ea580c !important;
-  border-color: #ea580c !important;
-}
-
-/* Force orange on borders */
-.border-primary {
-  border-color: #f97316 !important;
-}
-
-.border-primary\/20 {
-  border-color: rgba(249, 115, 22, 0.2) !important;
-}
-
-.border-primary\/30 {
-  border-color: rgba(249, 115, 22, 0.3) !important;
-}
-
-.border-primary\/40 {
-  border-color: rgba(249, 115, 22, 0.4) !important;
-}
-
-/* Force orange text */
-.text-primary {
-  color: #f97316 !important;
-}
-
-/* Force orange shadows */
-.shadow-primary\/10 {
-  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.1) !important;
-}
-
-.shadow-primary\/20 {
-  box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2) !important;
-}
-
-.shadow-primary\/30 {
-  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3) !important;
 }
 
 /* Custom RabbitHole styles */
@@ -102,72 +42,27 @@ html[data-theme="rabbithole"] {
   }
 }
 
-/* Background pattern - ORANGE */
-body {
-  background-image: 
-    radial-gradient(circle at 1px 1px, rgba(249, 115, 22, 0.15) 1px, transparent 0) !important;
-  background-size: 20px 20px;
-}
-
-/* Custom scrollbar - ORANGE */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #27272a;
+  background: hsl(var(--b2));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #f97316 !important;
+  background: hsl(var(--p));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ea580c !important;
-}
-/* Loading spinner orange */
-.loading-spinner {
-  color: #f97316 !important;
+  background: hsl(var(--pf));
 }
 
-/* Dropdown hover effects */
-.dropdown-content .menu li > *:hover {
-  background-color: rgba(249, 115, 22, 0.1) !important;
-  color: #f97316 !important;
-}
-
-/* Link hover effects */
-.link:hover {
-  color: #f97316 !important;
-}
-
-/* Card hover effects îmbunătățite */
-.card:hover {
-  border-color: rgba(249, 115, 22, 0.3) !important;
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15) !important;
-}
-
-/* Input focus effects */
-.input:focus,
-.textarea:focus {
-  border-color: #f97316 !important;
-  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2) !important;
-}
-
-/* Badge primary */
-.badge-primary {
-  background-color: #f97316 !important;
-  border-color: #f97316 !important;
-}
-
-/* Alert styling pentru consistență */
-.alert-error {
-  border-left: 4px solid #ef4444 !important;
-}
-
-/* Navbar sticky enhancement */
-.navbar.sticky {
-  backdrop-filter: blur(8px);
-  background-color: rgba(39, 39, 42, 0.95) !important;
+/* Background pattern */
+body {
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(156, 95, 255, 0.15) 1px, transparent 0);
+  background-size: 20px 20px;
 }
