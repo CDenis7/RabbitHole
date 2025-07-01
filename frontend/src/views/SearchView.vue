@@ -10,7 +10,7 @@ const holes = ref([]);
 const users = ref([]);
 const isLoading = ref(true);
 const error = ref(null);
-const activeTab = ref('posts'); // Tab-ul activ implicit
+const activeTab = ref('posts'); 
 
 const query = computed(() => route.query.q || '');
 

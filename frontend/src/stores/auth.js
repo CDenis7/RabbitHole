@@ -1,22 +1,14 @@
-// src/stores/auth.js
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import apiClient from '@/services/api';
 import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', () => {
-  // --- STATE ---
   const token = ref(localStorage.getItem('token') || null);
   const user = ref(JSON.parse(localStorage.getItem('user')) || null);
   const router = useRouter();
-
-  // --- GETTERS ---
   const isAuthenticated = computed(() => !!token.value);
   const userUsername = computed(() => user.value?.username || 'Guest');
-
-  // --- ACTIONS ---
-  
-  // Functia de inregistrare
   async function register(credentials) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -33,8 +25,6 @@ export const useAuthStore = defineStore('auth', () => {
 
     router.push('/');
   }
-
-  // Functia de login (nou adaugata)
   async function login(credentials) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -52,7 +42,6 @@ export const useAuthStore = defineStore('auth', () => {
     router.push('/');
   }
 
-  // Functia de logout
   function logout() {
     token.value = null;
     user.value = null;
@@ -68,7 +57,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     userUsername,
     register,
-    login, // Am adaugat functia de login la exporturi
+    login, 
     logout,
   };
 });

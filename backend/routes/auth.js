@@ -4,8 +4,6 @@ const db = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Endpoint pentru înregistrarea unui utilizator nou
-// POST /api/auth/register
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -14,16 +12,11 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    // Hash-uim parola înainte de a o salva
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
-
-    // Salvăm utilizatorul în baza de date
     const newUserQuery = 'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username, email';
     const { rows } = await db.query(newUserQuery, [username, email, passwordHash]);
     const user = rows[0];
-
-    // Generăm un token JWT
     const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.status(201).json({ token, user });
@@ -33,8 +26,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Endpoint pentru login
-// POST /api/auth/login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -43,7 +34,6 @@ router.post('/login', async (req, res) => {
     }
 
     try {
-        // Căutăm utilizatorul după email
         const userQuery = 'SELECT * FROM users WHERE email = $1';
         const { rows } = await db.query(userQuery, [email]);
         const user = rows[0];
@@ -51,15 +41,12 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ error: 'Credentiale invalide.' });
         }
-
-        // Verificăm dacă parola este corectă
         const isMatch = await bcrypt.compare(password, user.password_hash);
 
         if (!isMatch) {
             return res.status(401).json({ error: 'Credentiale invalide.' });
         }
         
-        // Generăm token-ul
         const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.json({ token, user: { id: user.id, username: user.username, email: user.email } });

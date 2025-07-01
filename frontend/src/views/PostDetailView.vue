@@ -21,8 +21,8 @@ const fetchPost = async (id) => {
     const response = await apiClient.get(`/posts/${id}`);
     post.value = response.data;
   } catch (err) {
-    console.error(`Eroare la preluarea postării ${id}:`, err);
-    error.value = 'Postarea nu a putut fi încărcată sau nu a fost găsită.';
+    console.error(`Error retrieving post ${id}:`, err);
+    error.value = 'The post could not be loaded or was not found.';
     post.value = null;
   } finally {
     isLoading.value = false;
@@ -34,7 +34,6 @@ const handleCommentAction = () => { fetchPost(route.params.id); };
 onMounted(() => { fetchPost(route.params.id); });
 watch(() => route.params.id, (newId) => { if (newId) fetchPost(newId); });
 
-// --- LOGICA NOUĂ PENTRU CARUSEL ---
 const changeSlide = (direction) => {
     if (!carouselContainer.value) return;
     const scrollAmount = carouselContainer.value.offsetWidth;
@@ -72,9 +71,9 @@ const changeSlide = (direction) => {
       <div class="divider my-6"></div>
      
       <AddCommentForm v-if="authStore.isAuthenticated" :post-id="post.id" @comment-added="handleCommentAction" />
-      <div v-else class="mt-4 p-4 bg-base-300 rounded-md text-center"><p>Trebuie să fii <RouterLink to="/login" class="link link-primary">autentificat</RouterLink> pentru a comenta.</p></div>
+      <div v-else class="mt-4 p-4 bg-base-300 rounded-md text-center"><p>You must be <RouterLink to="/login" class="link link-primary">logged</RouterLink> to comment.</p></div>
       <div class="divider mt-6"></div>
-      <h3 class="text-2xl font-bold mb-4">Comentarii</h3>
+      <h3 class="text-2xl font-bold mb-4">Comments</h3>
       <div class="mt-4">
         <CommentItem v-for="comment in post.comments" :key="comment.id" :comment="comment" :post-id="post.id" @comment-deleted="handleCommentAction" @comment-updated="handleCommentAction" @comment-added="handleCommentAction" />
       </div>

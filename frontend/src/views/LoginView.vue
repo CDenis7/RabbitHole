@@ -1,4 +1,3 @@
-<!-- src/views/LoginView.vue -->
 <script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
@@ -24,7 +23,6 @@ const handleLogin = async () => {
       email: email.value,
       password: password.value,
     });
-    // Redirectarea se face automat în acțiunea din store
   } catch (err) {
     error.value = err.response?.data?.error || 'A apărut o eroare la login.';
   } finally {
@@ -40,7 +38,6 @@ const handleLogin = async () => {
         <h2 class="card-title justify-center text-2xl">Welcome Back!</h2>
         
         <form @submit.prevent="handleLogin">
-          <!-- Câmp pentru Email -->
           <div class="form-control">
             <label class="label">
               <span class="label-text">Email</span>
@@ -53,8 +50,6 @@ const handleLogin = async () => {
               required
             />
           </div>
-
-          <!-- Câmp pentru Parolă -->
           <div class="form-control">
             <label class="label">
               <span class="label-text">Password</span>
@@ -67,13 +62,9 @@ const handleLogin = async () => {
               required
             />
           </div>
-
-          <!-- Afișare eroare -->
           <div v-if="error" class="alert alert-error text-sm mt-4">
             <span>{{ error }}</span>
           </div>
-
-          <!-- Buton de Submit -->
           <div class="form-control mt-6">
             <button class="btn btn-primary" type="submit" :disabled="isLoading">
               <span v-if="isLoading" class="loading loading-spinner"></span>

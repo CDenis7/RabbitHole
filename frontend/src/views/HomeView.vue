@@ -1,4 +1,3 @@
-<!-- src/views/HomeView.vue -->
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import apiClient from '../services/api.js';
@@ -11,7 +10,7 @@ const isLoading = ref(false);
 const isLoadingMore = ref(false);
 const error = ref(null);
 const observerTarget = ref(null);
-const activeSort = ref('new'); // Starea pentru sortarea activă
+const activeSort = ref('new');
 let observer = null;
 
 const fetchPosts = async (reset = false) => {
@@ -39,8 +38,8 @@ const fetchPosts = async (reset = false) => {
     hasMore.value = response.data.page < response.data.totalPages;
 
   } catch (err) {
-    console.error('Eroare la preluarea postărilor:', err);
-    error.value = 'Nu am putut încărca postările. Vă rugăm încercați mai târziu.';
+    console.error('Error retrieving posts:', err);
+    error.value = 'We were unable to load the posts. Please try again later.';
   } finally {
     isLoading.value = false;
     isLoadingMore.value = false;
@@ -50,24 +49,19 @@ const fetchPosts = async (reset = false) => {
 const changeSort = (sortType) => {
     if (activeSort.value === sortType) return;
     activeSort.value = sortType;
-    fetchPosts(true); // Resetăm și reîncărcăm postările
+    fetchPosts(true); 
 };
 
 const handlePostDeleted = (deletedPostId) => {
   posts.value = posts.value.filter(post => post.id !== deletedPostId);
 };
 
-// --- FIX: The observer logic has been corrected ---
-
-// 1. Fetch the initial posts when the component mounts.
 onMounted(() => {
   fetchPosts();
 });
 
-// 2. Use 'watch' to wait for the 'observerTarget' element to appear in the DOM.
 watch(observerTarget, (target) => {
   if (target) {
-    // 3. Once the element exists, create and attach the observer.
     observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore.value) {
@@ -89,14 +83,13 @@ onUnmounted(() => {
 
 <template>
   <main>
-    <!-- Bara de sortare -->
     <div class="bg-base-200 p-2 rounded-lg mb-4 flex items-center gap-2">
         <button 
             @click="changeSort('new')" 
             class="btn btn-sm" 
             :class="{ 'btn-primary': activeSort === 'new', 'btn-ghost': activeSort !== 'new' }"
         >
-            Cele mai noi
+           The newest
         </button>
         <button 
             @click="changeSort('top')" 
@@ -107,7 +100,6 @@ onUnmounted(() => {
         </button>
     </div>
 
-    <!-- Restul template-ului -->
     <div v-if="isLoading" class="text-center p-10">
       <span class="loading loading-lg loading-spinner text-primary"></span>
     </div>
@@ -124,11 +116,11 @@ onUnmounted(() => {
         />
       </div>
       <div v-else class="text-center p-10 bg-base-200 rounded-lg">
-        <p>Nu sunt postări de afișat.</p>
+        <p>There are no posts to display.</p>
       </div>
       <div ref="observerTarget" class="h-10 text-center">
         <span v-if="isLoadingMore" class="loading loading-spinner text-primary"></span>
-        <p v-if="!hasMore && posts.length > 0" class="text-base-content/60">Ați ajuns la final.</p>
+        <p v-if="!hasMore && posts.length > 0" class="text-base-content/60">You have reached the end.</p>
       </div>
     </div>
   </main>

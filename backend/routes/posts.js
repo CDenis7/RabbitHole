@@ -1,4 +1,3 @@
-// backend/routes/posts.js
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
@@ -16,7 +15,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } });
 
-// POST /api/posts - Creează o postare
 router.post('/', authMiddleware, upload.array('files', 10), async (req, res) => {
     const { title, communityId, body } = req.body;
     const userId = req.user.id;
@@ -33,12 +31,12 @@ router.post('/', authMiddleware, upload.array('files', 10), async (req, res) => 
     }
 });
 
-// GET /api/posts/feed - Preluarea feed-ului cu sortare
+
 router.get('/feed', async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 10;
     const offset = (page - 1) * limit;
-    const sort = req.query.sort || 'new'; // 'new' este implicit
+    const sort = req.query.sort || 'new'; 
 
     let orderByClause = 'ORDER BY p.created_at DESC';
     if (sort === 'top') {
@@ -75,7 +73,6 @@ router.get('/feed', async (req, res) => {
     }
 });
 
-// PUT /api/posts/:id - Actualizarea unei postări
 router.put('/:id', authMiddleware, upload.array('files', 10), async (req, res) => {
     const postId = req.params.id;
     const { title, body, existingMedia, filesToDelete } = req.body;
@@ -106,7 +103,6 @@ router.put('/:id', authMiddleware, upload.array('files', 10), async (req, res) =
     }
 });
 
-// DELETE /api/posts/:id - Ștergerea unei postări
 router.delete('/:id', authMiddleware, async (req, res) => {
     const postId = req.params.id;
     const loggedInUserId = req.user.id;
@@ -131,7 +127,6 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// GET /api/posts/:id - Preluarea detaliilor unei postări
 router.get('/:id', async (req, res) => {
     try {
         const postQuery = `SELECT p.*, u.username AS author, c.name AS community_name FROM posts p JOIN users u ON p.user_id = u.id JOIN communities c ON p.community_id = c.id WHERE p.id = $1`;

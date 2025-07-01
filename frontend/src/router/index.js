@@ -1,4 +1,3 @@
-// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
@@ -11,8 +10,7 @@ import SearchView from '../views/SearchView.vue';
 import CreateCommunityView from '../views/CreateCommunityView.vue';
 import CommunitySettingsView from '../views/CommunitySettingsView.vue';
 import EditPostView from '../views/EditPostView.vue';
-import UserProfileView from '../views/UserProfileView.vue'; // Am importat noul view
-
+import UserProfileView from '../views/UserProfileView.vue'; 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -27,7 +25,7 @@ const router = createRouter({
     { path: '/community/:id/settings', name: 'community-settings', component: CommunitySettingsView },
     { path: '/submit', name: 'create-post', component: CreatePostView },
     { path: '/search', name: 'search', component: SearchView },
-    // --- RUTA NOUĂ PENTRU PROFIL ---
+
     { path: '/user/:username', name: 'user-profile', component: UserProfileView },
   ]
 });

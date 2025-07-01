@@ -1,4 +1,3 @@
-<!-- src/components/AddCommentForm.vue -->
 <script setup>
 import { ref } from 'vue';
 import apiClient from '@/services/api';
@@ -30,7 +29,6 @@ const isLoading = ref(false);
 const error = ref(null);
 
 const handleSubmit = async () => {
-  // Debug logs to check props - ALWAYS RUNS
   console.log('=== ADDCOMMENTFORM DEBUG START ===');
   console.log('Props received in AddCommentForm:', {
     postId: props.postId,
@@ -39,8 +37,6 @@ const handleSubmit = async () => {
     communityName: props.communityName
   });
   console.log('=== ADDCOMMENTFORM DEBUG END ===');
-
-  // Validare suplimentară pentru a ne asigura că postId există
   if (!props.postId) {
       error.value = 'Eroare: ID-ul postării lipsește. Reîncărcați pagina.';
       return;
@@ -60,8 +56,6 @@ const handleSubmit = async () => {
       content: commentContent.value,
       parentCommentId: props.parentCommentId,
     };
-
-    // Add community information if available
     if (props.communityId) {
       payload.communityId = props.communityId;
     }
@@ -69,15 +63,14 @@ const handleSubmit = async () => {
       payload.communityName = props.communityName;
     }
 
-    // Try different field names that backend might expect
     if (props.communityName) {
-      payload.community_name = props.communityName; // snake_case version
+      payload.community_name = props.communityName; 
     }
     if (props.communityId) {
-      payload.community_id = props.communityId; // snake_case version
+      payload.community_id = props.communityId; 
     }
 
-    console.log('Payload being sent:', payload); // Debug log
+    console.log('Payload being sent:', payload);
     
     await apiClient.post('/comments', payload);
    
@@ -85,7 +78,7 @@ const handleSubmit = async () => {
     commentContent.value = '';
   } catch (err) {
     console.error('Eroare detaliată la adăugarea comentariului:', err);
-    console.error('Response data:', err.response?.data); // Additional debug info
+    console.error('Response data:', err.response?.data); 
     error.value = err.response?.data?.error || err.response?.data?.message || 'A apărut o eroare. Vă rugăm încercați din nou.';
   } finally {
     isLoading.value = false;
@@ -95,7 +88,7 @@ const handleSubmit = async () => {
 
 <template>
   <div class="mt-4 p-4 bg-base-300 rounded-lg">
-    <p class="text-sm mb-2">Comentezi ca <span class="font-bold text-primary">{{ authStore.userUsername }}</span></p>
+    <p class="text-sm mb-2">You comment like <span class="font-bold text-primary">{{ authStore.userUsername }}</span></p>
     <form @submit.prevent="handleSubmit">
       <textarea
         v-model="commentContent"
@@ -110,7 +103,7 @@ const handleSubmit = async () => {
       <div class="flex justify-end mt-2">
         <button type="submit" class="btn btn-primary" :disabled="isLoading">
           <span v-if="isLoading" class="loading loading-spinner"></span>
-          Comentează
+          Comment
         </button>
       </div>
     </form>

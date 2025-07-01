@@ -39,7 +39,7 @@ const handleUpdate = async () => {
         isEditing.value = false;
         emit('comment-updated');
     } catch (error) {
-        console.error("Eroare la actualizarea comentariului:", error);
+        console.error("Error updating comment:", error);
     }
 };
 
@@ -48,7 +48,7 @@ const handleDelete = async () => {
         await apiClient.delete(`/comments/${props.comment.id}`);
         emit('comment-deleted');
     } catch (error) {
-        console.error("Eroare la ștergerea comentariului:", error);
+        console.error("Error deleting comment:", error);
     }
 };
 
@@ -79,8 +79,8 @@ const handleReplyAdded = () => {
     <div v-else>
         <textarea v-model="editedContent" class="textarea textarea-bordered w-full"></textarea>
         <div class="flex justify-end gap-2 mt-2">
-            <button @click="isEditing = false" class="btn btn-sm btn-ghost">Anulează</button>
-            <button @click="handleUpdate" class="btn btn-sm btn-primary">Salvează</button>
+            <button @click="isEditing = false" class="btn btn-sm btn-ghost">Cancel</button>
+            <button @click="handleUpdate" class="btn btn-sm btn-primary">Save</button>
         </div>
     </div>
     <div v-if="isReplying" class="mt-2">

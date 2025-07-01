@@ -1,11 +1,8 @@
-<!-- src/views/RegisterView.vue -->
 <script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 
 const authStore = useAuthStore();
-
-// Variabile reactive pentru a stoca datele din formular
 const username = ref('');
 const email = ref('');
 const password = ref('');
@@ -14,22 +11,20 @@ const error = ref(null);
 
 const handleRegister = async () => {
   if (!username.value || !email.value || !password.value) {
-    error.value = 'Toate câmpurile sunt obligatorii.';
+    error.value = 'All fields are required.';
     return;
   }
   
   try {
     isLoading.value = true;
     error.value = null;
-    // Apelăm acțiunea 'register' din store-ul nostru
     await authStore.register({
       username: username.value,
       email: email.value,
       password: password.value,
     });
-    // Redirectarea se face automat în acțiunea din store
   } catch (err) {
-    error.value = err.response?.data?.error || 'A apărut o eroare la înregistrare.';
+    error.value = err.response?.data?.error || 'An error occurred while registering.';
   } finally {
     isLoading.value = false;
   }
@@ -43,7 +38,6 @@ const handleRegister = async () => {
         <h2 class="card-title justify-center text-2xl">Create an Account</h2>
         
         <form @submit.prevent="handleRegister">
-          <!-- Câmp pentru Username -->
           <div class="form-control">
             <label class="label">
               <span class="label-text">Username</span>
@@ -56,8 +50,6 @@ const handleRegister = async () => {
               required
             />
           </div>
-
-          <!-- Câmp pentru Email -->
           <div class="form-control">
             <label class="label">
               <span class="label-text">Email</span>
@@ -70,8 +62,6 @@ const handleRegister = async () => {
               required
             />
           </div>
-
-          <!-- Câmp pentru Parolă -->
           <div class="form-control">
             <label class="label">
               <span class="label-text">Password</span>
@@ -84,13 +74,9 @@ const handleRegister = async () => {
               required
             />
           </div>
-
-          <!-- Afișare eroare -->
           <div v-if="error" class="alert alert-error text-sm mt-4">
             <span>{{ error }}</span>
           </div>
-
-          <!-- Buton de Submit -->
           <div class="form-control mt-6">
             <button class="btn btn-primary" type="submit" :disabled="isLoading">
               <span v-if="isLoading" class="loading loading-spinner"></span>

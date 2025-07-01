@@ -1,4 +1,3 @@
-<!-- src/views/EditPostView.vue -->
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -24,7 +23,7 @@ const fetchPostData = async () => {
     body.value = response.data.body || '';
     existingMedia.value = response.data.media || [];
   } catch (error) {
-    error.value = 'Nu am putut încărca datele postării.';
+    error.value = 'We were unable to load the post data.';
   }
 };
 onMounted(fetchPostData);
@@ -55,7 +54,7 @@ const handleSubmit = async () => {
     });
     router.push({ name: 'post-detail', params: { id: postId } });
   } catch (error) {
-    error.value = 'A apărut o eroare la salvare.';
+    error.value = 'An error occurred while saving.';
   } finally {
     isLoading.value = false;
   }
@@ -64,12 +63,12 @@ const handleSubmit = async () => {
 
 <template>
   <div class="max-w-2xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">Editează Postarea</h1>
+    <h1 class="text-3xl font-bold mb-6">Edit Post</h1>
     <div class="card bg-base-200 shadow-xl">
       <div class="card-body">
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-             <label class="label"><span class="label-text">Titlu</span></label>
+             <label class="label"><span class="label-text">Title</span></label>
              <input v-model="title" type="text" class="input input-bordered w-full" />
           </div>
           <div>
@@ -77,7 +76,7 @@ const handleSubmit = async () => {
              <textarea v-model="body" class="textarea textarea-bordered h-36 w-full"></textarea>
           </div>
           <div v-if="existingMedia.length > 0">
-            <label class="label"><span class="label-text">Media Existentă</span></label>
+            <label class="label"><span class="label-text">Existing Media</span></label>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
               <div v-for="(media, index) in existingMedia" :key="media.url" class="relative group">
                 <img :src="`http://localhost:3001${media.url}`" class="rounded-lg object-cover h-28 w-full"/>
@@ -86,7 +85,7 @@ const handleSubmit = async () => {
             </div>
           </div>
           <div>
-            <label class="label"><span class="label-text">Adaugă Media Nouă</span></label>
+            <label class="label"><span class="label-text">Add New Media</span></label>
             <input type="file" @change="handleFileChange" multiple class="file-input file-input-bordered w-full" />
           </div>
           <div v-if="previewUrls.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -96,7 +95,7 @@ const handleSubmit = async () => {
           <div class="form-control mt-6">
             <button type="submit" class="btn btn-primary" :disabled="isLoading">
                 <span v-if="isLoading" class="loading loading-spinner"></span>
-                Salvează Modificările
+                Save Changes
             </button>
           </div>
         </form>

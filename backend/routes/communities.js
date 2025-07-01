@@ -1,10 +1,8 @@
-// backend/routes/communities.js
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// GET /api/communities/sidebar - Preluare comunități populare și recente
 router.get('/sidebar', async (req, res) => {
     try {
         const popularQuery = `
@@ -17,9 +15,9 @@ router.get('/sidebar', async (req, res) => {
         `;
         const popularResult = await db.query(popularQuery);
         const recentQuery = `
-            SELECT id, name, image_url 
-            FROM communities 
-            ORDER BY created_at DESC 
+            SELECT id, name, image_url
+            FROM communities
+            ORDER BY created_at DESC
             LIMIT 5;
         `;
         const recentResult = await db.query(recentQuery);
@@ -33,7 +31,6 @@ router.get('/sidebar', async (req, res) => {
     }
 });
 
-// POST /api/communities - Crearea unei noi comunități
 router.post('/', authMiddleware, async (req, res) => {
     const { name, description, imageUrl } = req.body;
     const ownerId = req.user.id;
@@ -56,7 +53,34 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 });
 
-// GET /api/communities - Obținerea listei de comunități
+router.delete('/:id', authMiddleware, async (req, res) => {
+    const communityId = req.params.id;
+    const loggedInUserId = req.user.id;
+
+    try {
+
+        const communityQuery = 'SELECT owner_id FROM communities WHERE id = $1';
+        const { rows } = await db.query(communityQuery, [communityId]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Comunitatea nu a fost găsită.' });
+        }
+
+        const communityOwnerId = rows[0].owner_id;
+        if (loggedInUserId !== communityOwnerId) {
+            return res.status(403).json({ error: 'Nu aveți permisiunea de a șterge această comunitate.' });
+        }
+
+        await db.query('DELETE FROM communities WHERE id = $1', [communityId]);
+
+        res.status(200).json({ message: 'Comunitatea a fost ștearsă cu succes.' });
+
+    } catch (error) {
+        console.error('Eroare la ștergerea comunității:', error);
+        res.status(500).json({ error: 'A apărut o eroare la ștergerea comunității.' });
+    }
+});
+
 router.get('/', async (req, res) => {
     try {
         const { rows } = await db.query('SELECT * FROM communities ORDER BY created_at DESC');
@@ -66,18 +90,17 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET /api/communities/:id - Obținerea detaliilor unei comunități (MODIFICAT)
 router.get('/:id', async (req, res) => {
     try {
         const communityQuery = `
-            SELECT 
-                c.*, 
+            SELECT
+                c.*,
                 (SELECT COUNT(*) FROM memberships m WHERE m.community_id = c.id)::int AS member_count
-            FROM communities c 
+            FROM communities c
             WHERE c.id = $1
         `;
         const { rows } = await db.query(communityQuery, [req.params.id]);
-        
+
         if (rows.length === 0) {
             return res.status(404).json({ error: 'Community not found.' });
         }
@@ -88,7 +111,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// GET /api/communities/:id/posts - Preluarea postărilor
 router.get('/:id/posts', async (req, res) => {
     const communityId = req.params.id;
     const page = parseInt(req.query.page, 10) || 1;
@@ -106,7 +128,6 @@ router.get('/:id/posts', async (req, res) => {
     }
 });
 
-// POST /api/communities/:id/join - Alăturare
 router.post('/:id/join', authMiddleware, async (req, res) => {
     const communityId = req.params.id;
     const userId = req.user.id;
@@ -121,7 +142,6 @@ router.post('/:id/join', authMiddleware, async (req, res) => {
     }
 });
 
-// DELETE /api/communities/:id/leave - Părăsire
 router.delete('/:id/leave', authMiddleware, async (req, res) => {
     const communityId = req.params.id;
     const userId = req.user.id;
@@ -140,7 +160,6 @@ router.delete('/:id/leave', authMiddleware, async (req, res) => {
     }
 });
 
-// GET /api/communities/:id/members - Preluare membri
 router.get('/:id/members', async (req, res) => {
     const { id } = req.params;
     try {
@@ -152,7 +171,6 @@ router.get('/:id/members', async (req, res) => {
     }
 });
 
-// DELETE /api/communities/:id/members/:memberId - Eliminare membru
 router.delete('/:id/members/:memberId', authMiddleware, async (req, res) => {
     const communityId = req.params.id;
     const memberIdToRemove = req.params.memberId;

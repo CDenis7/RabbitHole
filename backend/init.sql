@@ -1,9 +1,6 @@
--- init.sql
 
--- Opreste afisarea notificarilor (ex: "TABLE "users" does not exist, skipping")
 SET client_min_messages TO WARNING;
 
--- Sterge tabelele in ordine inversa pentru a evita erorile de foreign key
 DROP TABLE IF EXISTS votes;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
@@ -11,9 +8,7 @@ DROP TABLE IF EXISTS memberships;
 DROP TABLE IF EXISTS communities;
 DROP TABLE IF EXISTS users;
 
---
--- Tabela `users`
---
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -22,9 +17,7 @@ CREATE TABLE users (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
---
--- Tabela `communities`
---
+
 CREATE TABLE communities (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
@@ -34,9 +27,6 @@ CREATE TABLE communities (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
---
--- Tabela `memberships` (leaga userii de comunitati)
---
 CREATE TABLE memberships (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -46,13 +36,10 @@ CREATE TABLE memberships (
     UNIQUE(user_id, community_id)
 );
 
---
--- Tabela `posts`
---
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     title VARCHAR(300) NOT NULL,
-    content_type VARCHAR(10) NOT NULL, -- 'text', 'image', 'video'
+    content_type VARCHAR(10) NOT NULL, 
     content TEXT NOT NULL,
     description TEXT,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -62,40 +49,32 @@ CREATE TABLE posts (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
---
--- Tabela `comments` (cu suport pentru nesting)
---
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
-    parent_comment_id INTEGER REFERENCES comments(id) ON DELETE CASCADE, -- Cheia pentru comentarii nested
+    parent_comment_id INTEGER REFERENCES comments(id) ON DELETE CASCADE, 
     vote_count INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
---
--- Tabela `votes` (polimorfica pentru postari si comentarii)
---
 CREATE TABLE votes (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     voteable_id INTEGER NOT NULL,
-    voteable_type VARCHAR(10) NOT NULL, -- 'post' sau 'comment'
-    value SMALLINT NOT NULL CHECK (value IN (-1, 1)), -- -1 pentru dislike, 1 pentru like
+    voteable_type VARCHAR(10) NOT NULL,
+    value SMALLINT NOT NULL CHECK (value IN (-1, 1)), 
     UNIQUE(user_id, voteable_id, voteable_type)
 );
 
 
--- Adaugam indexuri pentru a optimiza cautarile frecvente
 CREATE INDEX ON posts (user_id);
 CREATE INDEX ON posts (community_id);
 CREATE INDEX ON comments (post_id);
 CREATE INDEX ON comments (user_id);
 CREATE INDEX ON votes (voteable_id, voteable_type);
 
--- Trigger pentru a actualiza automat `updated_at` in tabela `posts`
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -110,5 +89,4 @@ FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
 
--- Afisam un mesaj de succes
 \echo 'Database schema created successfully!'   x

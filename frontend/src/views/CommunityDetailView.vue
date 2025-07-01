@@ -41,7 +41,7 @@ const fetchInitialData = async (id) => {
     members.value = membersRes.data;
     await fetchMorePosts(id, true);
   } catch (error) {
-    error.value = 'Nu am putut încărca pagina comunității.';
+    error.value = 'We were unable to load the hole page.';
   } finally {
     isLoading.value = false;
   }
@@ -63,7 +63,7 @@ const fetchMorePosts = async (id, reset = false) => {
     page.value++;
     hasMore.value = response.data.page < response.data.totalPages;
   } catch (err) {
-    console.error('Eroare la încărcarea postărilor suplimentare:', err);
+    console.error('Error loading additional posts:', err);
   } finally {
     isLoadingMore.value = false;
   }
@@ -87,7 +87,7 @@ const handleJoinCommunity = async () => {
     await apiClient.post(`/communities/${community.value.id}/join`);
     members.value.push({ id: authStore.user.id, username: authStore.user.username, role: 'member' });
   } catch (err) {
-    actionError.value = err.response?.data?.error || 'A apărut o eroare.';
+    actionError.value = err.response?.data?.error || 'An error occurred.';
   } finally {
     isActionLoading.value = false;
   }
@@ -100,7 +100,7 @@ const handleLeaveCommunity = async () => {
     await apiClient.delete(`/communities/${community.value.id}/leave`);
     members.value = members.value.filter(member => member.id !== authStore.user.id);
   } catch (err) {
-    actionError.value = err.response?.data?.error || 'A apărut o eroare.';
+    actionError.value = err.response?.data?.error || 'An error occurred.';
   } finally {
     isActionLoading.value = false;
   }
@@ -144,23 +144,23 @@ onUnmounted(() => {
             <h1 class="text-4xl font-bold">h/{{ community.name }}</h1>
             <p class="mt-2 text-base-content/80">{{ community.description }}</p>
           </div>
-          <RouterLink v-if="isOwner" :to="`/community/${community.id}/settings`" class="btn btn-secondary">Gestionează Membrii</RouterLink>
+          <RouterLink v-if="isOwner" :to="`/community/${community.id}/settings`" class="btn btn-secondary">Manage Members</RouterLink>
         </div>
         <div class="mt-4">
           <button v-if="authStore.isAuthenticated && !isMember" @click="handleJoinCommunity" class="btn btn-primary btn-sm" :disabled="isActionLoading">
             <span v-if="isActionLoading" class="loading loading-spinner"></span>
-            Intră în comunitate
+            Join the hole
           </button>
           <button v-else-if="!authStore.isAuthenticated" @click="() => router.push('/login')" class="btn btn-primary btn-sm">
-            Intră în comunitate
+            Join the hole
           </button>
           <button v-if="isMember && !isOwner" @click="handleLeaveCommunity" class="btn btn-outline btn-sm" :disabled="isActionLoading">
              <span v-if="isActionLoading" class="loading loading-spinner"></span>
-            ✓ Membru (Părăsește)
+            ✓ Member (Leave)
           </button>
           <div v-if="isOwner" class="badge badge-primary gap-2 p-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-            Proprietar
+            Owner
           </div>
           <p v-if="actionError" class="text-error text-xs mt-2">{{ actionError }}</p>
         </div>
@@ -168,7 +168,7 @@ onUnmounted(() => {
      
       <h2 class="text-2xl font-bold mb-4">Postări</h2>
       <div class="bg-base-200 p-2 rounded-lg mb-4 flex items-center gap-2">
-        <button @click="changeSort('new')" class="btn btn-sm" :class="{ 'btn-primary': activeSort === 'new', 'btn-ghost': activeSort !== 'new' }">Cele mai noi</button>
+        <button @click="changeSort('new')" class="btn btn-sm" :class="{ 'btn-primary': activeSort === 'new', 'btn-ghost': activeSort !== 'new' }">The newest</button>
         <button @click="changeSort('top')" class="btn btn-sm" :class="{ 'btn-primary': activeSort === 'top', 'btn-ghost': activeSort !== 'top' }">Top</button>
       </div>
 
@@ -181,12 +181,12 @@ onUnmounted(() => {
         />
       </div>
       <div v-else class="text-center p-10 bg-base-200 rounded-lg">
-        <p>Nu există postări în această comunitate.</p>
+        <p>There are no posts in this hole..</p>
       </div>
 
       <div ref="observerTarget" class="h-10 text-center">
         <span v-if="isLoadingMore" class="loading loading-spinner text-primary"></span>
-        <p v-if="!hasMore && posts.length > 0" class="text-base-content/60">Ați ajuns la final.</p>
+        <p v-if="!hasMore && posts.length > 0" class="text-base-content/60">You have reached the end.</p>
       </div>
     </div>
   </div>

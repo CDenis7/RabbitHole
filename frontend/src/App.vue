@@ -1,4 +1,3 @@
-<!-- src/App.vue -->
 <script setup>
 import { RouterView } from 'vue-router';
 import { onMounted } from 'vue';
@@ -6,7 +5,6 @@ import TheNavbar from './components/TheNavbar.vue';
 import LeftSidebar from './components/LeftSidebar.vue';
 import RightSidebar from './components/RightSidebar.vue';
 
-// Force theme on component mount
 onMounted(() => {
   document.documentElement.setAttribute('data-theme', 'rabbithole');
   document.documentElement.style.colorScheme = 'dark';
@@ -20,20 +18,17 @@ onMounted(() => {
     <TheNavbar />
     <main class="container mx-auto px-2 sm:px-4 py-4 sm:py-6">
       <div class="grid grid-cols-12 gap-4 lg:gap-6">
-        
-        <!-- Left Sidebar: Hidden on small screens -->
+  
         <div class="hidden lg:block col-span-3">
           <div class="sticky top-20">
              <LeftSidebar />
           </div>
         </div>
 
-        <!-- Main Content: Takes full width on small screens -->
         <div class="col-span-12 lg:col-span-9 xl:col-span-6">
           <RouterView />
         </div>
 
-        <!-- Right Sidebar: Hidden on small and medium screens -->
         <div class="hidden xl:block col-span-3">
           <div class="sticky top-20">
             <RightSidebar />
@@ -46,9 +41,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Force dark theme colors at component level */
+
 div {
-  background-color: hsl(240 4% 10%); /* base-100 */
-  color: hsl(240 5% 96%); /* base-content */
+  background-color: hsl(240 4% 10%); 
+  color: hsl(240 5% 96%); 
 }
 </style>

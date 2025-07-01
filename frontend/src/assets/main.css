@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Apply RabbitHole theme globally */
+ 
 :root {
   color-scheme: dark;
 }
@@ -11,7 +11,7 @@ html {
   data-theme: rabbithole;
 }
 
-/* Custom RabbitHole styles */
+ 
 @layer components {
   .rabbit-card {
     @apply bg-base-200 rounded-xl p-6 shadow-lg border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10;
@@ -42,7 +42,7 @@ html {
   }
 }
 
-/* Custom scrollbar */
+ 
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -60,7 +60,7 @@ html {
   background: hsl(var(--pf));
 }
 
-/* Background pattern */
+ 
 body {
   background-image: 
     radial-gradient(circle at 1px 1px, rgba(156, 95, 255, 0.15) 1px, transparent 0);

@@ -1,4 +1,3 @@
-<!-- src/components/TheNavbar.vue -->
 <script setup>
 import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
@@ -22,28 +21,23 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <!-- --- MODIFICARE: Am adăugat clasele 'sticky top-0 z-50' --- -->
   <div class="navbar bg-base-300 shadow sticky top-0 z-50">
-    <!-- Stânga: Logo și Nume -->
     <div class="navbar-start">
       <RouterLink to="/" class="btn btn-ghost text-xl font-bold">
        <img src="../assets/logo.png" alt="RabbitHole Logo" class="h-14 w-auto mr-2" />
       </RouterLink>
     </div>
-
-    <!-- Centru: Bara de Căutare -->
     <div class="navbar-center w-1/2 lg:w-1/3">
       <form @submit.prevent="handleSearch" class="form-control w-full">
         <input
           v-model="searchQuery"
           type="text"
-          placeholder="Caută pe RabbitHole"
+          placeholder="Search the RabbitHole"
           class="input input-bordered w-full"
         />
       </form>
     </div>
 
-    <!-- Dreapta: Acțiuni Utilizator -->
     <div class="navbar-end gap-2">
       <template v-if="!authStore.isAuthenticated">
         <RouterLink to="/login" class="btn btn-outline">Login</RouterLink>
@@ -57,7 +51,7 @@ const handleLogout = () => {
               </div>
           </div>
           <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
-            <li><RouterLink :to="`/user/${authStore.user.username}`">Profil</RouterLink></li>
+            <li><RouterLink :to="`/user/${authStore.user.username}`">Profile</RouterLink></li>
             <li><a @click.prevent="handleLogout">Logout</a></li>
           </ul>
         </div>

@@ -1,10 +1,9 @@
-// backend/routes/comments.js
+
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// POST /api/comments - Crearea unui comentariu nou
 router.post('/', authMiddleware, async (req, res) => {
     const { content, postId, parentCommentId } = req.body;
     const userId = req.user.id;
@@ -30,9 +29,6 @@ router.post('/', authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Eroare la adăugarea comentariului.' });
     }
 });
-
-// --- RUTA NOUĂ PENTRU EDITARE ---
-// PUT /api/comments/:id - Actualizarea unui comentariu
 router.put('/:id', authMiddleware, async (req, res) => {
     const commentId = req.params.id;
     const { content } = req.body;
@@ -63,14 +59,12 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// --- RUTA NOUĂ PENTRU ȘTERGERE ---
-// DELETE /api/comments/:id - Ștergerea unui comentariu
 router.delete('/:id', authMiddleware, async (req, res) => {
     const commentId = req.params.id;
     const loggedInUserId = req.user.id;
 
     try {
-        // Permitem ștergerea dacă utilizatorul este autorul comentariului
+
         const commentQuery = 'SELECT user_id FROM comments WHERE id = $1';
         const { rows } = await db.query(commentQuery, [commentId]);
 

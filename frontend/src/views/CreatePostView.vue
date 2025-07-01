@@ -18,7 +18,7 @@ const fetchCommunities = async () => {
     const response = await apiClient.get('/communities');
     communities.value = response.data;
   } catch (error) {
-    error.value = 'Nu am putut încărca comunitățile.';
+    error.value = "I couldn't load the holes.";
   }
 };
 onMounted(fetchCommunities);
@@ -30,7 +30,7 @@ const handleFileChange = (event) => {
 
 const handleSubmit = async () => {
   if (!selectedCommunity.value || !title.value.trim()) {
-    error.value = 'Comunitatea și titlul sunt obligatorii.';
+    error.value = 'Hole and title are required.';
     return;
   }
  
@@ -54,8 +54,8 @@ const handleSubmit = async () => {
     });
     router.push({ name: 'post-detail', params: { id: response.data.id } });
   } catch (err) {
-    console.error('Eroare la crearea postării:', err);
-    error.value = err.response?.data?.error || 'A apărut o eroare.';
+    console.error('Error creating post:', err);
+    error.value = err.response?.data?.error || 'An error occurred.';
   } finally {
     isLoading.value = false;
   }
@@ -64,29 +64,29 @@ const handleSubmit = async () => {
 
 <template>
   <div class="max-w-2xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">Creează o Postare</h1>
+    <h1 class="text-3xl font-bold mb-6">Create a Post</h1>
     <div class="card bg-base-200 shadow-xl">
       <div class="card-body">
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-            <label class="label"><span class="label-text">Comunitate</span></label>
+            <label class="label"><span class="label-text">Hole</span></label>
             <select v-model="selectedCommunity" class="select select-bordered w-full" required>
-              <option disabled :value="null">Selectează o comunitate</option>
+              <option disabled :value="null">Select a Hole</option>
               <option v-for="community in communities" :key="community.id" :value="community.id">
                 h/{{ community.name }}
               </option>
             </select>
           </div>
           <div>
-            <label class="label"><span class="label-text">Titlu</span></label>
+            <label class="label"><span class="label-text">Tilte</span></label>
             <input v-model="title" type="text" placeholder="Un titlu interesant" class="input input-bordered w-full" required />
           </div>
           <div>
-            <label class="label"><span class="label-text">Text (Opțional)</span></label>
+            <label class="label"><span class="label-text">Text (Optional)</span></label>
             <textarea v-model="body" class="textarea textarea-bordered h-36 w-full" placeholder="Scrie ceva aici..."></textarea>
           </div>
           <div>
-            <label class="label"><span class="label-text">Imagini/Video-uri (Opțional)</span></label>
+            <label class="label"><span class="label-text">Images/Videos (Optional)</span></label>
             <input type="file" @change="handleFileChange" multiple class="file-input file-input-bordered w-full" accept="image/*,video/*"/>
           </div>
           <div v-if="previewUrls.length" class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
@@ -96,7 +96,7 @@ const handleSubmit = async () => {
           <div class="form-control mt-6">
             <button type="submit" class="btn btn-primary" :disabled="isLoading">
               <span v-if="isLoading" class="loading loading-spinner"></span>
-              Postează
+              Post
             </button>
           </div>
         </form>

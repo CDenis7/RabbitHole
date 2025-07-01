@@ -1,9 +1,8 @@
-    // backend/routes/search.js
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// GET /api/search?q=... - Caută în întreaga aplicație
+
 router.get('/', async (req, res) => {
     const { q } = req.query;
 
@@ -12,9 +11,8 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const searchTerm = `%${q}%`; // Pregătim termenul pentru query-ul ILIKE
+        const searchTerm = `%${q}%`;
 
-        // Căutare în comunități (Holes)
         const communitiesQuery = `
             SELECT id, name, image_url 
             FROM communities 
@@ -23,7 +21,7 @@ router.get('/', async (req, res) => {
         `;
         const communitiesResult = await db.query(communitiesQuery, [searchTerm]);
 
-        // Căutare în utilizatori
+
         const usersQuery = `
             SELECT id, username 
             FROM users 
@@ -32,7 +30,7 @@ router.get('/', async (req, res) => {
         `;
         const usersResult = await db.query(usersQuery, [searchTerm]);
 
-        // Căutare în postări (în titlu sau corp)
+ 
         const postsQuery = `
             SELECT p.*, u.username as author, c.name as community_name 
             FROM posts p

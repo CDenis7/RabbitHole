@@ -8,7 +8,7 @@ const route = useRoute();
 const profile = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
-const activeTab = ref('posts'); // Tab-ul activ implicit
+const activeTab = ref('posts'); 
 
 const username = computed(() => route.params.username);
 
@@ -19,8 +19,8 @@ const fetchData = async (user) => {
     const response = await apiClient.get(`/users/${user}`);
     profile.value = response.data;
   } catch (err) {
-    console.error(`Eroare la preluarea profilului pentru ${user}:`, err);
-    error.value = 'Utilizatorul nu a putut fi încărcat sau nu a fost găsit.';
+    console.error(`Error retrieving profile for ${user}:`, err);
+    error.value = 'The user could not be loaded or was not found.';
   } finally {
     isLoading.value = false;
   }
@@ -44,12 +44,12 @@ watch(username, (newUsername) => {
     <div v-else-if="profile">
             <div class="mb-8 p-6 bg-base-200 rounded-lg shadow-md">
         <h1 class="text-4xl font-bold">r/{{ profile.user.username }}</h1>
-        <p class="text-sm text-base-content/70 mt-1">Membru din: {{ new Date(profile.user.created_at).toLocaleDateString() }}</p>
+        <p class="text-sm text-base-content/70 mt-1">Member since: {{ new Date(profile.user.created_at).toLocaleDateString() }}</p>
       </div>
      
             <div role="tablist" class="tabs tabs-lifted">
-        <a role="tab" class="tab" :class="{'tab-active': activeTab === 'posts'}" @click="activeTab = 'posts'">Postări</a>
-        <a role="tab" class="tab" :class="{'tab-active': activeTab === 'comments'}" @click="activeTab = 'comments'">Comentarii</a>
+        <a role="tab" class="tab" :class="{'tab-active': activeTab === 'posts'}" @click="activeTab = 'posts'">Posts></a>
+        <a role="tab" class="tab" :class="{'tab-active': activeTab === 'comments'}" @click="activeTab = 'comments'">Comments</a>
       </div>
 
             <div class="bg-base-200 p-4 rounded-b-lg rounded-tr-lg">
@@ -57,7 +57,7 @@ watch(username, (newUsername) => {
           <div v-if="profile.posts.length > 0">
             <PostCard v-for="post in profile.posts" :key="post.id" :post="post" />
           </div>
-          <div v-else class="text-center p-6"><p>Acest utilizator nu are nicio postare.</p></div>
+          <div v-else class="text-center p-6"><p>This user has no posts.</p></div>
         </div>
        
                 <div v-if="activeTab === 'comments'">
@@ -65,11 +65,11 @@ watch(username, (newUsername) => {
                 <div v-for="comment in profile.comments" :key="comment.id" class="p-4 bg-base-100 rounded-lg mb-2 shadow">
                     <p class="text-base-content">{{ comment.content }}</p>
                     <p class="text-xs text-base-content/60 mt-2">
-                        comentat la <RouterLink :to="`/post/${comment.post_id}`" class="link link-hover">{{ comment.post_title }}</RouterLink>
+                        commented on <RouterLink :to="`/post/${comment.post_id}`" class="link link-hover">{{ comment.post_title }}</RouterLink>
                     </p>
                 </div>
             </div>
-          <div v-else class="text-center p-6"><p>Acest utilizator nu are niciun comentariu.</p></div>
+          <div v-else class="text-center p-6"><p>This user has no comments.</p></div>
         </div>
       </div>
     </div>

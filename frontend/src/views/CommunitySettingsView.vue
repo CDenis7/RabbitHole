@@ -1,19 +1,20 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router'; 
 import apiClient from '@/services/api';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
-const authStore = useAuthStore(); // Acum va fi folosit
+const router = useRouter(); 
+const authStore = useAuthStore();
 const members = ref([]);
 const community = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
+const deleteError = ref(null);
 
 const communityId = computed(() => route.params.id);
 
-// Verificăm dacă utilizatorul logat este proprietarul comunității
 const isOwner = computed(() => {
   return authStore.isAuthenticated && community.value && authStore.user?.id === community.value.owner_id;
 });
@@ -29,23 +30,33 @@ const fetchData = async () => {
     community.value = communityRes.data;
     members.value = membersRes.data;
   } catch (err) {
-    console.error('Failed to load community settings:', err);
-    error.value = "Nu am putut încărca setările comunității.";
+    console.error('Failed to load hole settings:', err);
+    error.value = "We were unable to load the hole settings.";
   } finally {
     isLoading.value = false;
   }
 };
 
 const handleRemoveMember = async (memberId) => {
-  // if (!window.confirm('Sunteți sigur că doriți să eliminați acest membru?')) return;
   try {
     await apiClient.delete(`/communities/${communityId.value}/members/${memberId}`);
-    // Eliminăm membrul din lista locală pentru o actualizare instantanee
     members.value = members.value.filter(member => member.id !== memberId);
   } catch (err) {
     console.error('Failed to remove member:', err);
-    // Aici se poate afișa o notificare de eroare
   }
+};
+
+const handleDeleteCommunity = async () => {
+    deleteError.value = null;
+    try {
+        await apiClient.delete(`/communities/${communityId.value}`);
+        router.push('/');
+    } catch (err) {
+        console.error('Failed to delete hole:', err);
+        deleteError.value = err.response?.data?.error || 'An error occurred while deleting the hole.';
+        const modal = document.getElementById('delete_community_modal');
+        if (modal) modal.close();
+    }
 };
 
 onMounted(fetchData);
@@ -60,16 +71,19 @@ onMounted(fetchData);
       <span>{{ error }}</span>
     </div>
     <div v-else-if="community">
-      <h1 class="text-3xl font-bold">Setări pentru h/{{ community.name }}</h1>
-      <p class="mb-6">Gestionează membrii comunității.</p>
+      <h1 class="text-3xl font-bold">Settings for h/{{ community.name }}</h1>
+      <p class="mb-6 text-base-content/70">Manage hole members and settings.</p>
 
-      <div class="overflow-x-auto">
+      <div class="divider"></div>
+
+      <h2 class="text-2xl font-semibold mb-4">Members</h2>
+      <div class="overflow-x-auto bg-base-200 p-4 rounded-lg">
         <table class="table w-full">
           <thead>
             <tr>
-              <th>Utilizator</th>
-              <th>Rol</th>
-              <th>Acțiuni</th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -81,18 +95,46 @@ onMounted(fetchData);
                 <span class="badge" :class="{ 'badge-primary': member.role === 'owner' }">{{ member.role }}</span>
               </td>
               <td>
-                                <button
+                <button
                   v-if="isOwner && member.id !== community.owner_id"
                   @click="handleRemoveMember(member.id)"
                   class="btn btn-error btn-sm"
                 >
-                  Elimină
+                  Remove
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <div v-if="isOwner" class="mt-8">
+          <div class="divider"></div>
+          <h2 class="text-2xl font-semibold mb-4 text-error">Danger Zone</h2>
+          <div class="bg-error/10 border border-error/50 p-4 rounded-lg flex justify-between items-center">
+              <div>
+                  <h3 class="font-bold text-lg">Delete this hole</h3>
+                  <p class="text-sm text-error/80">This action is irreversible. All posts, comments, and associated data will be permanently deleted.</p>
+              </div>
+              <button class="btn btn-error" onclick="delete_community_modal.showModal()">Delete Community</button>
+          </div>
+          <p v-if="deleteError" class="text-error text-sm mt-2">{{ deleteError }}</p>
+      </div>
+
+      <dialog id="delete_community_modal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Confirm Delete</h3>
+            <p class="py-4">Are you absolutely sure you want to delete the hole **h/{{ community.name }}**? This action cannot be undone.</p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Cancel</button>
+                    <button @click="handleDeleteCommunity" class="btn btn-error ml-2">Yes, delete</button>
+                </form>
+            </div>
+        </div>
+         <form method="dialog" class="modal-backdrop"><button>close</button></form>
+      </dialog>
+
     </div>
   </div>
 </template>

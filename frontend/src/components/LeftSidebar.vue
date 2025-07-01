@@ -2,12 +2,10 @@
 import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 import apiClient from '@/services/api';
-// The unused 'useAuthStore' import has been removed.
 
 const popularHoles = ref([]);
 const recentHoles = ref([]);
 const isLoading = ref(true);
-// The unused 'authStore' variable has been removed.
 
 const fetchSidebarData = async () => {
   try {
@@ -27,7 +25,14 @@ onMounted(fetchSidebarData);
 
 <template>
   <div class="space-y-6">
-            <div v-if="!isLoading" class="bg-base-200 rounded-lg shadow">
+
+    <div class="bg-base-200 rounded-lg shadow p-4">
+        <RouterLink to="/communities" class="btn btn-primary w-full">
+            Explore Holes
+        </RouterLink>
+    </div>
+
+    <div v-if="!isLoading" class="bg-base-200 rounded-lg shadow">
       <h3 class="font-bold p-4 pb-2 uppercase text-xs text-base-content/60">Popular Holes</h3>
       <div class="flex flex-col p-2 space-y-1">
         <RouterLink
@@ -45,8 +50,8 @@ onMounted(fetchSidebarData);
         </RouterLink>
       </div>
     </div>
-   
-        <div v-if="!isLoading" class="bg-base-200 rounded-lg shadow">
+
+    <div v-if="!isLoading" class="bg-base-200 rounded-lg shadow">
       <h3 class="font-bold p-4 pb-2 uppercase text-xs text-base-content/60">Recent Holes</h3>
       <div class="flex flex-col p-2 space-y-1">
         <RouterLink
@@ -65,8 +70,11 @@ onMounted(fetchSidebarData);
       </div>
     </div>
 
-        <div v-if="isLoading" class="bg-base-200 rounded-lg shadow p-4 text-center">
-      <span class="loading loading-sm loading-spinner"></span>
+    <div v-if="isLoading" class="space-y-6">
+        <div class="skeleton h-12 w-full"></div>
+        <div class="skeleton h-32 w-full"></div>
+        <div class="skeleton h-32 w-full"></div>
     </div>
+
   </div>
 </template>

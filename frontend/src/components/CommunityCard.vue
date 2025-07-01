@@ -25,7 +25,6 @@ defineProps({
       <h2 class="card-title font-bold">h/{{ community.name }}</h2>
       <p class="text-sm text-base-content/70">{{ community.description || 'No description available.' }}</p>
       <div class="card-actions mt-2">
-                <div class="badge badge-outline">1,234 members</div>
       </div>
     </div>
   </RouterLink>
