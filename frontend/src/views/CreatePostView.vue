@@ -21,6 +21,7 @@ const fetchCommunities = async () => {
     error.value = "I couldn't load the holes.";
   }
 };
+
 onMounted(fetchCommunities);
 
 const handleFileChange = (event) => {
@@ -49,9 +50,9 @@ const handleSubmit = async () => {
   try {
     isLoading.value = true;
     error.value = null;
-    const response = await apiClient.post('/posts', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
+    
+    const response = await apiClient.post('/posts', formData);
+    
     router.push({ name: 'post-detail', params: { id: response.data.id } });
   } catch (err) {
     console.error('Error creating post:', err);
@@ -78,7 +79,7 @@ const handleSubmit = async () => {
             </select>
           </div>
           <div>
-            <label class="label"><span class="label-text">Tilte</span></label>
+            <label class="label"><span class="label-text">Title</span></label>
             <input v-model="title" type="text" placeholder="Un titlu interesant" class="input input-bordered w-full" required />
           </div>
           <div>

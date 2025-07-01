@@ -23,11 +23,15 @@ const handleLogout = () => {
 <template>
   <div class="navbar bg-base-300 shadow sticky top-0 z-50">
     <div class="navbar-start">
-      <RouterLink to="/" class="btn btn-ghost text-xl font-bold">
-       <img src="../assets/logo.png" alt="RabbitHole Logo" class="h-14 w-auto mr-2" />
+      <RouterLink to="/" class="btn btn-ghost text-sm sm:text-xl font-bold">
+       <img 
+         src="../assets/logo.png" 
+         alt="RabbitHole Logo" 
+         class="h-6 w-auto sm:h-8 md:h-10 lg:h-12" 
+       />
       </RouterLink>
     </div>
-    <div class="navbar-center w-1/2 lg:w-1/3">
+    <div class="navbar-center hidden sm:flex sm:w-1/2 lg:w-1/3">
       <form @submit.prevent="handleSearch" class="form-control w-full">
         <input
           v-model="searchQuery"
@@ -38,15 +42,32 @@ const handleLogout = () => {
       </form>
     </div>
 
-    <div class="navbar-end gap-2">
+    <div class="navbar-end gap-1 sm:gap-2">
+      <div class="dropdown dropdown-end sm:hidden">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <div tabindex="0" class="dropdown-content mt-3 z-[1] p-4 shadow bg-base-200 rounded-box w-80">
+          <form @submit.prevent="handleSearch" class="form-control w-full">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search the RabbitHole"
+              class="input input-bordered w-full"
+            />
+          </form>
+        </div>
+      </div>
       <template v-if="!authStore.isAuthenticated">
-        <RouterLink to="/login" class="btn btn-outline">Login</RouterLink>
-        <RouterLink to="/register" class="btn btn-primary">Register</RouterLink>
+        <RouterLink to="/login" class="btn btn-outline btn-sm sm:btn-md">Login</RouterLink>
+        <RouterLink to="/register" class="btn btn-primary btn-sm sm:btn-md">Register</RouterLink>
       </template>
       <template v-else>
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-             <div class="w-10 rounded-full">
+             <div class="w-8 sm:w-10 rounded-full">
                 <img alt="User Avatar" src="https://placehold.co/40x40/3abff8/000000?text=U" />
               </div>
           </div>
